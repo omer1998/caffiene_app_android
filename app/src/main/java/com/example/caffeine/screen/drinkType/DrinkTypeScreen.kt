@@ -93,9 +93,15 @@ fun DrinkTypeScreen(modifier: Modifier = Modifier) {
                     ),
                     targetValue = if (index == pagerState.currentPage) 200.dp else 119.dp
                 )
+                val scaleImage by animateFloatAsState(
+                    animationSpec = TweenSpec(
+                        durationMillis = 600,
+                        easing = LinearOutSlowInEasing
+                    ),
+                    targetValue = if (index == pagerState.currentPage) 1f else 0.7f
+                )
                 DrinkTypeCard(
-                    height = height,
-                    width = width,
+                    scale = scaleImage,
                     imageId = drinksList[index].image,
                     name = drinksList[index].name,
                 )
