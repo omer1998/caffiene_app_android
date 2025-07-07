@@ -95,7 +95,7 @@ fun DrinkTypeScreen(modifier: Modifier = Modifier) {
                 )
                 val scaleImage by animateFloatAsState(
                     animationSpec = TweenSpec(
-                        durationMillis = 600,
+                        durationMillis = 450,
                         easing = LinearOutSlowInEasing
                     ),
                     targetValue = if (index == pagerState.currentPage) 1f else 0.7f
