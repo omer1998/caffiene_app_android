@@ -1,6 +1,7 @@
 package com.example.caffeine.screen.drinkDetail
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.slideInVertically
@@ -31,7 +32,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.caffeine.R
 import com.example.caffeine.component.AppBar
@@ -45,16 +45,16 @@ fun DrinkDetailScreen(title: String, modifier: Modifier = Modifier) {
     var currentCupSize by remember { mutableStateOf(CupSize.M) }
     var currentCoffeeAmount by remember { mutableStateOf(CoffeeAmount.MEDIUM) }
     val cupScale by remember { mutableStateOf(1f) }
-    var cupScaleAnimatable = remember { androidx.compose.animation.core.Animatable(cupScale) }
+    var cupScaleAnimatable = remember { Animatable(cupScale) }
     val offsetY = remember { Animatable(-300f) }
     val alpha = remember { Animatable(1f) }
 
-    val almostDoneVisible by remember { mutableStateOf(false) }
+    var almostDoneVisible by remember { mutableStateOf(false) }
     var isShowTopBar by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
         offsetY.animateTo(
-            targetValue = 50f,
+            targetValue = 30f,
             animationSpec = TweenSpec(durationMillis = 2500)
         )
 
@@ -133,46 +133,69 @@ fun DrinkDetailScreen(title: String, modifier: Modifier = Modifier) {
                     painter = painterResource(R.drawable.the_shance_coffee)
                 )
             }
+            AnimatedVisibility(!almostDoneVisible) {
+                Column {
+                    CupSizeOption(
+                        currentSize = currentCupSize, onClick = {
+                            currentCupSize = it
+                            scope.launch {
+                                cupScaleAnimatable.animateTo(targetValue = it.scale())
 
-            CupSizeOption(
-                currentSize = currentCupSize, onClick = {
-                    currentCupSize = it
-                    scope.launch {
-                        cupScaleAnimatable.animateTo(targetValue = it.scale())
+                            }
+                        })
+                    CoffeeAmountOption(
+                        modifier = Modifier.padding(top = 16.dp), onClick = {
+                            scope.launch {
 
-                    }
-                })
-            CoffeeAmountOption(
-                modifier = Modifier.padding(top = 16.dp), onClick = {
-                    scope.launch {
-
-                            alpha.snapTo(1f)
-                            offsetY.snapTo(-300f)
-                            offsetY.animateTo(
-                                targetValue = 50f,
-                                animationSpec = TweenSpec(durationMillis = 2500)
-                            )
-                            alpha.animateTo(
-                                targetValue = 0f,
-                                animationSpec = TweenSpec(durationMillis = 2500)
-                            )
+                                alpha.snapTo(1f)
+                                offsetY.snapTo(-300f)
+                                offsetY.animateTo(
+                                    targetValue = 30f,
+                                    animationSpec = TweenSpec(durationMillis = 2500)
+                                )
+                                alpha.animateTo(
+                                    targetValue = 0f,
+                                    animationSpec = TweenSpec(durationMillis = 2500)
+                                )
 
 
-                    }
-                    currentCoffeeAmount = it
+                            }
+                            currentCoffeeAmount = it
 
-                }, currentCoffeeAmount = currentCoffeeAmount
-            )
+                        }, currentCoffeeAmount = currentCoffeeAmount
+                    )
+                }
+            }
+
 
             Spacer(modifier = Modifier.weight(1f))
 
-            AppPrimaryButton(
-                title = "continue",
-                icon = ImageVector.vectorResource(R.drawable.arrow_right),
-                onClick = {
-                    isShowTopBar = !isShowTopBar
-                },
-            )
+            Crossfade(
+                targetState = almostDoneVisible,
+                label = "crossFade animation"
+
+            ) {
+                if (it) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        LoadingIndicator()
+                        Spacer(modifier.height(37.dp))
+                        AlmostDoneSection()
+                    }
+
+
+                } else {
+                    AppPrimaryButton(
+                        title = "continue",
+                        icon = ImageVector.vectorResource(R.drawable.arrow_right),
+                        onClick = {
+                            isShowTopBar = !isShowTopBar
+                            almostDoneVisible = true
+                        },
+                    )
+
+                }
+            }
+
 
         }
     }
