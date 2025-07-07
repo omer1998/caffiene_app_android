@@ -1,5 +1,10 @@
 package com.example.caffeine.screen.drinkDetail
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -7,10 +12,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,11 +25,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.caffeine.R
 import com.example.caffeine.component.AppBar
@@ -35,20 +44,48 @@ import kotlinx.coroutines.launch
 fun DrinkDetailScreen(title: String, modifier: Modifier = Modifier) {
     var currentCupSize by remember { mutableStateOf(CupSize.M) }
     var currentCoffeeAmount by remember { mutableStateOf(CoffeeAmount.MEDIUM) }
-    val cupScale by remember { mutableStateOf(1f)}
+    val cupScale by remember { mutableStateOf(1f) }
     var cupScaleAnimatable = remember { androidx.compose.animation.core.Animatable(cupScale) }
+    val offsetY = remember { Animatable(-300f) }
+    val alpha = remember { Animatable(1f) }
 
+    val almostDoneVisible by remember { mutableStateOf(false) }
+    var isShowTopBar by remember { mutableStateOf(true) }
+
+    LaunchedEffect(Unit) {
+        offsetY.animateTo(
+            targetValue = 50f,
+            animationSpec = TweenSpec(durationMillis = 2500)
+        )
+
+        alpha.animateTo(
+            targetValue = 0f,
+            animationSpec = TweenSpec(durationMillis = 2500)
+        )
+
+    }
     val scope = rememberCoroutineScope()
     AppScaffold(
         appBar = {
-            AppBar(
-                leading = {
-                    CircularButton(
-                        onClick = {}, icon = ImageVector.vectorResource(R.drawable.back_arrow)
-                    )
+            AnimatedVisibility(
+                isShowTopBar,
+                enter = slideInVertically(animationSpec = TweenSpec(durationMillis = 700)) { it ->
+                    -it * 2
                 },
-                title = { Text(title) },
+                exit = slideOutVertically(animationSpec = TweenSpec(durationMillis = 700)) { it ->
+                    -it * 2
+                }
             )
+            {
+                AppBar(
+                    leading = {
+                        CircularButton(
+                            onClick = {}, icon = ImageVector.vectorResource(R.drawable.back_arrow)
+                        )
+                    },
+                    title = { Text(title) },
+                )
+            }
         }) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Box(
@@ -57,8 +94,16 @@ fun DrinkDetailScreen(title: String, modifier: Modifier = Modifier) {
                     .height(350.dp),
                 contentAlignment = Alignment.Center
             ) {
-                FallingBean(currentCoffeeAmount.name)
-                Box(Modifier.fillMaxWidth()){
+                //FallingBean(currentCoffeeAmount.name)
+                Image(
+                    painter = painterResource(id = R.drawable.coffee_beans),
+                    contentDescription = "Coffee Beans",
+                    modifier = modifier
+                        .offset(y = offsetY.value.dp)
+                        .alpha(alpha.value)
+                        .size(width = 100.dp, height = 150.dp)
+                )
+                Box(Modifier.fillMaxWidth()) {
                     Image(
                         painter = painterResource(R.drawable.cup_size),
                         contentDescription = null,
@@ -69,47 +114,68 @@ fun DrinkDetailScreen(title: String, modifier: Modifier = Modifier) {
 
                         // contentScale = ContentScale.Crop
 
-                )
+                    )
 
-                Text("200 Ml", modifier = Modifier.align(alignment = Alignment.TopStart))
-
-            }
-
-            Image(
-                modifier = Modifier
-                    .size(66.dp)
-                    .align(alignment = Alignment.Center),
-                contentDescription = null,
-                painter = painterResource(R.drawable.the_shance_coffee)
-            )
-        }
-
-        CupSizeOption(
-            currentSize = currentCupSize, onClick = {
-                currentCupSize = it
-                scope.launch {
-                    cupScaleAnimatable.animateTo(targetValue = it.scale())
+                    Text(
+                        "200 Ml",
+                        modifier = Modifier
+                            .align(alignment = Alignment.TopStart)
+                            .offset(y = 50.dp)
+                    )
 
                 }
-            })
-        CoffeeAmountOption(
-            modifier = Modifier.padding(top = 16.dp),
-            onClick = {
-                currentCoffeeAmount = it
-            },
-            currentCoffeeAmount = currentCoffeeAmount
-        )
 
-        Spacer(modifier = Modifier.weight(1f))
+                Image(
+                    modifier = Modifier
+                        .size(66.dp)
+                        .align(alignment = Alignment.Center),
+                    contentDescription = null,
+                    painter = painterResource(R.drawable.the_shance_coffee)
+                )
+            }
 
-        AppPrimaryButton(
-            title = "continue",
-            icon = ImageVector.vectorResource(R.drawable.arrow_right),
-            onClick = {},
-        )
+            CupSizeOption(
+                currentSize = currentCupSize, onClick = {
+                    currentCupSize = it
+                    scope.launch {
+                        cupScaleAnimatable.animateTo(targetValue = it.scale())
 
+                    }
+                })
+            CoffeeAmountOption(
+                modifier = Modifier.padding(top = 16.dp), onClick = {
+                    scope.launch {
+
+                            alpha.snapTo(1f)
+                            offsetY.snapTo(-300f)
+                            offsetY.animateTo(
+                                targetValue = 50f,
+                                animationSpec = TweenSpec(durationMillis = 2500)
+                            )
+                            alpha.animateTo(
+                                targetValue = 0f,
+                                animationSpec = TweenSpec(durationMillis = 2500)
+                            )
+
+
+                    }
+                    currentCoffeeAmount = it
+
+                }, currentCoffeeAmount = currentCoffeeAmount
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            AppPrimaryButton(
+                title = "continue",
+                icon = ImageVector.vectorResource(R.drawable.arrow_right),
+                onClick = {
+                    isShowTopBar = !isShowTopBar
+                },
+            )
+
+        }
     }
-}
 }
 
 
