@@ -1,10 +1,12 @@
 package com.example.caffeine.navigation
 
+import androidx.annotation.DrawableRes
 import androidx.compose.runtime.compositionLocalOf
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.example.caffeine.screen.SnackDetailScreen
 import com.example.caffeine.screen.snackScreen.SnackScreen
 import com.example.caffeine.screen.drinkReadyScreen.DrinkReadyScreen
 import com.example.caffeine.screen.drinkDetail.DrinkDetailScreen
@@ -15,7 +17,9 @@ import kotlinx.serialization.Serializable
 val localNavigationController = compositionLocalOf<NavHostController> {
     throw IllegalArgumentException("No navigation controller provided")
 }
+
 sealed interface AppRoute
+
 @Serializable
 object HomeRoute : AppRoute
 
@@ -31,6 +35,10 @@ object DrinkReadyRoute : AppRoute
 @Serializable
 object SnacksScreenRoute : AppRoute
 
+@Serializable
+data class SnackDetailRoute(@DrawableRes val imageId: Int) : AppRoute
+
+
 fun NavGraphBuilder.home() {
     composable<HomeRoute> {
         HomeScreen()
@@ -42,6 +50,7 @@ fun NavGraphBuilder.drinkType() {
         DrinkTypeScreen()
     }
 }
+
 fun NavGraphBuilder.drinkDetail() {
     composable<DrinkDetailRoute> { navStack ->
         val type = navStack.toRoute<DrinkDetailRoute>().type
@@ -49,14 +58,23 @@ fun NavGraphBuilder.drinkDetail() {
     }
 }
 
-fun NavGraphBuilder.drinkReady(){
+fun NavGraphBuilder.drinkReady() {
     composable<DrinkReadyRoute> {
         DrinkReadyScreen()
     }
 }
 
-fun NavGraphBuilder.snackScreen(){
+fun NavGraphBuilder.snackScreen() {
     composable<SnacksScreenRoute> {
         SnackScreen()
+    }
+}
+
+fun NavGraphBuilder.snackDetail() {
+    composable<SnackDetailRoute> {
+        val imageId = it.toRoute<SnackDetailRoute>().imageId
+        SnackDetailScreen(
+            imageId = imageId,
+        )
     }
 }
