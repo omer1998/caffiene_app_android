@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,13 +46,14 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun DrinkDetailScreen(title: String, modifier: Modifier = Modifier) {
+    val screenHeight = LocalConfiguration.current.screenHeightDp.toFloat()
     var currentCupSize by remember { mutableStateOf(CupSize.M) }
     var currentCoffeeAmount by remember { mutableStateOf(CoffeeAmount.MEDIUM) }
     val cupScale by remember { mutableStateOf(1f) }
     var cupScaleAnimatable = remember { Animatable(cupScale) }
     val offsetY = remember { Animatable(-300f) }
     val alpha = remember { Animatable(1f) }
-
+    val appBarOffset = remember {Animatable(screenHeight)}
     var almostDoneVisible by remember { mutableStateOf(false) }
     var isShowTopBar by remember { mutableStateOf(true) }
 
@@ -60,6 +62,12 @@ fun DrinkDetailScreen(title: String, modifier: Modifier = Modifier) {
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
+        scope.launch {
+            appBarOffset.animateTo(
+                targetValue = 0f,
+                animationSpec = TweenSpec(durationMillis = 1000)
+            )
+        }
         scope.launch {
             offsetY.animateTo(
                 targetValue = 30f,
@@ -86,6 +94,7 @@ fun DrinkDetailScreen(title: String, modifier: Modifier = Modifier) {
             )
             {
                 AppBar(
+                    modifier = Modifier.offset(y= appBarOffset.value.dp),
                     leading = {
                         CircularButton(
                             onClick = {}, icon = ImageVector.vectorResource(R.drawable.back_arrow)
