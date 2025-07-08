@@ -10,6 +10,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -18,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.caffeine.R
+import com.example.caffeine.modifier.myShadow
 import com.example.caffeine.ui.theme.AppTheme
 import com.example.caffeine.ui.theme.urbanist
 
@@ -37,7 +39,12 @@ fun AppPrimaryButton(
         ),
         contentPadding = PaddingValues(horizontal = 32.dp, vertical = 18.dp),
         elevation = ButtonDefaults.buttonElevation(defaultElevation = 5.dp),
-        modifier = modifier
+        modifier = modifier.myShadow(
+            offsetX = 0.dp,
+            offsetY = 5.dp,
+            blurRadius = 10.dp,
+            color = Color(0x3D000000)
+        )
 
     ) {
         Text(
