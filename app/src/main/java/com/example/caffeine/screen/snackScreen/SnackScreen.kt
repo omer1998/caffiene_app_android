@@ -15,6 +15,7 @@ import com.example.caffeine.R
 import com.example.caffeine.component.AppBar
 import com.example.caffeine.component.AppScaffold
 import com.example.caffeine.component.CircularButton
+import com.example.caffeine.screen.snackScreen.component.SnacksCardList
 import com.example.caffeine.ui.theme.urbanist
 
 val snackList = listOf(

@@ -1,4 +1,4 @@
-package com.example.caffeine.screen.snackScreen
+package com.example.caffeine.screen.snackScreen.component
 
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateFloatAsState

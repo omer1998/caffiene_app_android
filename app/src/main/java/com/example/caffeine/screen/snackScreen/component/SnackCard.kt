@@ -1,4 +1,4 @@
-package com.example.caffeine.screen.snackScreen
+package com.example.caffeine.screen.snackScreen.component
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
