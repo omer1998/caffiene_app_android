@@ -20,6 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,15 +41,22 @@ import com.example.caffeine.component.AppScaffold
 import com.example.caffeine.component.CircularButton
 import com.example.caffeine.ui.theme.AppTheme
 import com.example.caffeine.ui.theme.urbanist
+import kotlinx.coroutines.launch
 
 @Composable
 fun DrinkReadyScreen(modifier: Modifier = Modifier) {
-    val cupOffset = remember { Animatable(200f) }
+    val cupOffset = remember { Animatable(-200f) }
+    val readySectionOffset = remember { Animatable(-200f) }
     var isTakeAway by remember { mutableStateOf(true) }
+    val scope = rememberCoroutineScope()
     LaunchedEffect(Unit) {
-        cupOffset.animateTo(
-            -50f,
-            animationSpec = TweenSpec(durationMillis = 1000)
+        scope.launch {
+            cupOffset.animateTo(
+                -50f, animationSpec = TweenSpec(durationMillis = 3000)
+            )
+        }
+        readySectionOffset.animateTo(
+            0f, animationSpec = TweenSpec(durationMillis = 3000)
         )
     }
     AppScaffold(
@@ -56,20 +64,21 @@ fun DrinkReadyScreen(modifier: Modifier = Modifier) {
             AppBar(
                 leading = {
                     CircularButton(
-                        onClick = {},
-                        icon = ImageVector.vectorResource(R.drawable.cancel_icon)
+                        onClick = {}, icon = ImageVector.vectorResource(R.drawable.cancel_icon)
                     )
-                }
-            )
-        }
-    ) {
+                })
+        }) {
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
 
-            ReadySection(modifier = Modifier.padding(bottom = 20.dp))
+            ReadySection(
+                modifier = Modifier
+                    .padding(bottom = 20.dp)
+                    .offset(y = readySectionOffset.value.dp)
+            )
             Box(
                 modifier = Modifier
                     .width(260.dp)
@@ -84,14 +93,13 @@ fun DrinkReadyScreen(modifier: Modifier = Modifier) {
                         .padding(vertical = 50.dp)
                         .zIndex(1f)
                         .scale(1.06f)
-                        .offset(y = -50.dp)
+                        .offset(y = cupOffset.value.dp)
 
                 )
                 Image(
                     painter = painterResource(R.drawable.cup_size),
                     contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxSize()
+                    modifier = Modifier.fillMaxSize()
                 )
                 Image(
                     modifier = Modifier
