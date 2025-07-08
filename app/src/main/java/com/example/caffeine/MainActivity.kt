@@ -30,7 +30,17 @@ import com.example.caffeine.ui.theme.CaffeineTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.light(
+                android.graphics.Color.GRAY,
+                android.graphics.Color.GRAY,
+
+            ),
+            navigationBarStyle = SystemBarStyle.light(
+                android.graphics.Color.GRAY,
+                android.graphics.Color.GRAY
+            )
+        )
         setContent {
             CaffeineTheme {
                 NavHost(
