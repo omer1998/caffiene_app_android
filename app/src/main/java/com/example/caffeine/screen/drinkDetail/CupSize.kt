@@ -13,3 +13,11 @@ fun CupSize.scale (): Float{
         CupSize.L -> 1.3f
     }
 }
+
+fun CupSize.getSize(): Int{
+    return when (this){
+        CupSize.S -> 150
+        CupSize.M -> 200
+        CupSize.L -> 400
+    }
+}

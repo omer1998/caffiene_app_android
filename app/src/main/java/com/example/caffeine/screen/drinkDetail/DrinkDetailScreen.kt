@@ -126,7 +126,6 @@ fun DrinkDetailScreen(title: String, modifier: Modifier = Modifier) {
                     .height(350.dp),
                 contentAlignment = Alignment.Center
             ) {
-                //FallingBean(currentCoffeeAmount.name)
                 Image(
                     painter = painterResource(id = R.drawable.coffee_beans),
                     contentDescription = "Coffee Beans",
@@ -149,7 +148,12 @@ fun DrinkDetailScreen(title: String, modifier: Modifier = Modifier) {
                     )
 
                     Text(
-                        "200 Ml",
+                        "${currentCupSize.getSize()} ML",
+                        fontWeight = FontWeight(500),
+                        fontFamily = urbanist,
+                        fontSize = 14.sp,
+                        letterSpacing = 0.25.sp,
+                        color = Color(0x99000000),
                         modifier = Modifier
                             .align(alignment = Alignment.TopStart)
                             .offset(y = 50.dp)
