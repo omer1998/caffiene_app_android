@@ -3,6 +3,7 @@ package com.example.caffeine.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -29,7 +30,7 @@ import com.example.caffeine.ui.theme.urbanist
 @Composable
 fun ReadySection(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier.widthIn(max = 207.dp),
+        modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
@@ -46,7 +47,7 @@ fun ReadySection(modifier: Modifier = Modifier) {
             )
         }
         Text(
-            "Your coffee is ready, Enjoy",
+            "Your coffee is ready,\n Enjoy",
             modifier = Modifier.padding(top = 24.dp),
             fontFamily = urbanist,
             fontWeight = FontWeight(700),

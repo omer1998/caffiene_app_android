@@ -20,6 +20,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.caffeine.navigation.HomeRoute
 import com.example.caffeine.navigation.drinkDetail
+import com.example.caffeine.navigation.drinkReady
 import com.example.caffeine.navigation.drinkType
 import com.example.caffeine.navigation.home
 import com.example.caffeine.navigation.localNavigationController
@@ -40,6 +41,7 @@ class MainActivity : ComponentActivity() {
                     home()
                     drinkType()
                     drinkDetail()
+                    drinkReady()
 
                 }
             }

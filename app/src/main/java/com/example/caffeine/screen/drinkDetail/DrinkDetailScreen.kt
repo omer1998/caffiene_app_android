@@ -38,6 +38,9 @@ import com.example.caffeine.component.AppBar
 import com.example.caffeine.component.AppPrimaryButton
 import com.example.caffeine.component.AppScaffold
 import com.example.caffeine.component.CircularButton
+import com.example.caffeine.navigation.DrinkReadyRoute
+import com.example.caffeine.navigation.localNavigationController
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -51,6 +54,8 @@ fun DrinkDetailScreen(title: String, modifier: Modifier = Modifier) {
 
     var almostDoneVisible by remember { mutableStateOf(false) }
     var isShowTopBar by remember { mutableStateOf(true) }
+
+    val navController = localNavigationController.current
 
     LaunchedEffect(Unit) {
         offsetY.animateTo(
@@ -190,6 +195,10 @@ fun DrinkDetailScreen(title: String, modifier: Modifier = Modifier) {
                         onClick = {
                             isShowTopBar = !isShowTopBar
                             almostDoneVisible = true
+                            scope.launch {
+                                delay(4000)
+                                navController.navigate(DrinkReadyRoute)
+                            }
                         },
                     )
 
