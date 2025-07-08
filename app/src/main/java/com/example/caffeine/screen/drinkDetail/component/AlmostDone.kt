@@ -1,4 +1,4 @@
-package com.example.caffeine.screen.drinkDetail
+package com.example.caffeine.screen.drinkDetail.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

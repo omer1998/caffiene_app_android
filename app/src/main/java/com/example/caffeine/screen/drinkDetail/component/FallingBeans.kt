@@ -1,4 +1,4 @@
-package com.example.caffeine.screen.drinkDetail
+package com.example.caffeine.screen.drinkDetail.component
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween

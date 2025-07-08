@@ -45,6 +45,10 @@ import com.example.caffeine.component.AppScaffold
 import com.example.caffeine.component.CircularButton
 import com.example.caffeine.navigation.DrinkReadyRoute
 import com.example.caffeine.navigation.localNavigationController
+import com.example.caffeine.screen.drinkDetail.component.AlmostDoneSection
+import com.example.caffeine.screen.drinkDetail.component.CoffeeAmountOption
+import com.example.caffeine.screen.drinkDetail.component.CupSizeOption
+import com.example.caffeine.screen.drinkDetail.component.LoadingIndicator
 import com.example.caffeine.ui.theme.urbanist
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

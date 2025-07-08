@@ -1,4 +1,4 @@
-package com.example.caffeine.screen.drinkDetail
+package com.example.caffeine.screen.drinkDetail.component
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.TweenSpec
@@ -36,6 +36,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.caffeine.R
+import com.example.caffeine.screen.drinkDetail.CoffeeAmount
+import com.example.caffeine.screen.drinkDetail.CupSize
 import com.example.caffeine.ui.theme.AppTheme
 
 @Composable
