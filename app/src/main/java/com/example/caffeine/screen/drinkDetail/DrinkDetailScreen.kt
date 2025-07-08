@@ -57,11 +57,15 @@ fun DrinkDetailScreen(title: String, modifier: Modifier = Modifier) {
 
     val navController = localNavigationController.current
 
+    val scope = rememberCoroutineScope()
+
     LaunchedEffect(Unit) {
-        offsetY.animateTo(
-            targetValue = 30f,
-            animationSpec = TweenSpec(durationMillis = 2500)
-        )
+        scope.launch {
+            offsetY.animateTo(
+                targetValue = 30f,
+                animationSpec = TweenSpec(durationMillis = 2500)
+            )
+        }
 
         alpha.animateTo(
             targetValue = 0f,
@@ -69,7 +73,6 @@ fun DrinkDetailScreen(title: String, modifier: Modifier = Modifier) {
         )
 
     }
-    val scope = rememberCoroutineScope()
     AppScaffold(
         appBar = {
             AnimatedVisibility(
