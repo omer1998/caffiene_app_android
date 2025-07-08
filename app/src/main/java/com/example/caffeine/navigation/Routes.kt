@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.example.caffeine.screen.DrinkReadyScreen
+import com.example.caffeine.screen.drinkReadyScreen.DrinkReadyScreen
 import com.example.caffeine.screen.drinkDetail.DrinkDetailScreen
 import com.example.caffeine.screen.drinkType.DrinkTypeScreen
 import com.example.caffeine.screen.home.HomeScreen

@@ -1,4 +1,4 @@
-package com.example.caffeine.screen
+package com.example.caffeine.screen.drinkReadyScreen
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.TweenSpec
@@ -38,6 +38,7 @@ import com.example.caffeine.R
 import com.example.caffeine.component.AppBar
 import com.example.caffeine.component.AppPrimaryButton
 import com.example.caffeine.component.AppScaffold
+import com.example.caffeine.component.AppSwitch
 import com.example.caffeine.component.CircularButton
 import com.example.caffeine.ui.theme.AppTheme
 import com.example.caffeine.ui.theme.urbanist

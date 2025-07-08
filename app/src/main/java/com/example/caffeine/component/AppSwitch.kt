@@ -1,4 +1,4 @@
-package com.example.caffeine.screen
+package com.example.caffeine.component
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.animateDp
