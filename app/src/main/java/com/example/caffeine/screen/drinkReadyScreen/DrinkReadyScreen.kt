@@ -40,6 +40,8 @@ import com.example.caffeine.component.AppPrimaryButton
 import com.example.caffeine.component.AppScaffold
 import com.example.caffeine.component.AppSwitch
 import com.example.caffeine.component.CircularButton
+import com.example.caffeine.navigation.SnacksScreenRoute
+import com.example.caffeine.navigation.localNavigationController
 import com.example.caffeine.ui.theme.AppTheme
 import com.example.caffeine.ui.theme.urbanist
 import kotlinx.coroutines.launch
@@ -50,6 +52,7 @@ fun DrinkReadyScreen(modifier: Modifier = Modifier) {
     val readySectionOffset = remember { Animatable(-200f) }
     var isTakeAway by remember { mutableStateOf(true) }
     val scope = rememberCoroutineScope()
+    val navController = localNavigationController.current
     LaunchedEffect(Unit) {
         scope.launch {
             cupOffset.animateTo(
@@ -134,7 +137,9 @@ fun DrinkReadyScreen(modifier: Modifier = Modifier) {
             AppPrimaryButton(
                 title = "Take snack",
                 icon = ImageVector.vectorResource(R.drawable.arrow_right),
-                onClick = { },
+                onClick = {
+                    navController.navigate(SnacksScreenRoute)
+                },
                 modifier = Modifier.padding(top = 16.dp)
             )
         }

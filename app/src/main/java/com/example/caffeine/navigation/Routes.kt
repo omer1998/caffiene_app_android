@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.example.caffeine.screen.snackScreen.SnackScreen
 import com.example.caffeine.screen.drinkReadyScreen.DrinkReadyScreen
 import com.example.caffeine.screen.drinkDetail.DrinkDetailScreen
 import com.example.caffeine.screen.drinkType.DrinkTypeScreen
@@ -27,6 +28,9 @@ data class DrinkDetailRoute(val type: String) : AppRoute
 @Serializable
 object DrinkReadyRoute : AppRoute
 
+@Serializable
+object SnacksScreenRoute : AppRoute
+
 fun NavGraphBuilder.home() {
     composable<HomeRoute> {
         HomeScreen()
@@ -48,5 +52,11 @@ fun NavGraphBuilder.drinkDetail() {
 fun NavGraphBuilder.drinkReady(){
     composable<DrinkReadyRoute> {
         DrinkReadyScreen()
+    }
+}
+
+fun NavGraphBuilder.snackScreen(){
+    composable<SnacksScreenRoute> {
+        SnackScreen()
     }
 }

@@ -19,11 +19,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.caffeine.navigation.HomeRoute
+import com.example.caffeine.navigation.SnacksScreenRoute
 import com.example.caffeine.navigation.drinkDetail
 import com.example.caffeine.navigation.drinkReady
 import com.example.caffeine.navigation.drinkType
 import com.example.caffeine.navigation.home
 import com.example.caffeine.navigation.localNavigationController
+import com.example.caffeine.navigation.snackScreen
 import com.example.caffeine.screen.home.HomeScreen
 import com.example.caffeine.ui.theme.CaffeineTheme
 
@@ -45,14 +47,14 @@ class MainActivity : ComponentActivity() {
             CaffeineTheme {
                 NavHost(
                     navController = localNavigationController.current,
-                    startDestination = HomeRoute,
+                    startDestination = SnacksScreenRoute,
                     modifier = Modifier
                 ) {
                     home()
                     drinkType()
                     drinkDetail()
                     drinkReady()
-
+                    snackScreen()
                 }
             }
         }
