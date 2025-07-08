@@ -44,9 +44,6 @@ fun DrinkTypeScreen(modifier: Modifier = Modifier) {
         initialPage = 0,
         pageCount = { drinksList.size }
     )
-    val selectedDrink by remember {
-        mutableStateOf(pagerState.currentPage)
-    }
 
     val navController = localNavigationController.current
 
@@ -142,7 +139,7 @@ fun DrinkTypeScreen(modifier: Modifier = Modifier) {
                 title = "continue",
                 icon = ImageVector.vectorResource(R.drawable.arrow_right),
                 onClick = {
-                    navController.navigate(DrinkDetailRoute(type = drinksList[selectedDrink].name))
+                    navController.navigate(DrinkDetailRoute(type = drinksList[pagerState.currentPage].name))
                 },
             )
 
