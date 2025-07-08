@@ -28,12 +28,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.caffeine.R
 import com.example.caffeine.component.AppBar
 import com.example.caffeine.component.AppPrimaryButton
@@ -41,6 +45,7 @@ import com.example.caffeine.component.AppScaffold
 import com.example.caffeine.component.CircularButton
 import com.example.caffeine.navigation.DrinkReadyRoute
 import com.example.caffeine.navigation.localNavigationController
+import com.example.caffeine.ui.theme.urbanist
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -53,7 +58,7 @@ fun DrinkDetailScreen(title: String, modifier: Modifier = Modifier) {
     var cupScaleAnimatable = remember { Animatable(cupScale) }
     val offsetY = remember { Animatable(-300f) }
     val alpha = remember { Animatable(1f) }
-    val appBarOffset = remember {Animatable(screenHeight)}
+    val appBarOffset = remember { Animatable(screenHeight) }
     var almostDoneVisible by remember { mutableStateOf(false) }
     var isShowTopBar by remember { mutableStateOf(true) }
 
@@ -94,13 +99,23 @@ fun DrinkDetailScreen(title: String, modifier: Modifier = Modifier) {
             )
             {
                 AppBar(
-                    modifier = Modifier.offset(y= appBarOffset.value.dp),
+                    modifier = Modifier.offset(y = appBarOffset.value.dp),
                     leading = {
                         CircularButton(
                             onClick = {}, icon = ImageVector.vectorResource(R.drawable.back_arrow)
                         )
                     },
-                    title = { Text(title) },
+                    title = {
+                        Text(
+                            title,
+                            fontWeight = FontWeight(700),
+                            fontFamily = urbanist,
+                            fontSize = 24.sp,
+                            letterSpacing = 0.25.sp,
+                            color = Color(0xDE1F1F1F),
+                            textAlign = TextAlign.Start
+                        )
+                    },
                 )
             }
         }) {
