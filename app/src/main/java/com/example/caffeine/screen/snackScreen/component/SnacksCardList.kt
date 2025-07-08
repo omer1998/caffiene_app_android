@@ -59,7 +59,9 @@ fun SnacksCardList(
                 animationSpec = TweenSpec(durationMillis = 300)
             )
             SnackCard(
-                onClick = {},
+                onClick = {
+                    onItemClick(item)
+                },
                 rotation = rotation,
                 xOffset = xOffset,
                 transY = transY,

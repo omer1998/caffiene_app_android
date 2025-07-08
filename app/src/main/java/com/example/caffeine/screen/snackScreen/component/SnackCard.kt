@@ -36,7 +36,7 @@ fun SnackCard(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .width(260.dp)
             .height(270.dp)
             .rotate(rotation)

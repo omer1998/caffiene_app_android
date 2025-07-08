@@ -15,6 +15,9 @@ import com.example.caffeine.R
 import com.example.caffeine.component.AppBar
 import com.example.caffeine.component.AppScaffold
 import com.example.caffeine.component.CircularButton
+import com.example.caffeine.navigation.SnackDetailRoute
+import com.example.caffeine.navigation.localNavigationController
+import com.example.caffeine.screen.SnackDetailScreen
 import com.example.caffeine.screen.snackScreen.component.SnacksCardList
 import com.example.caffeine.ui.theme.urbanist
 
@@ -31,6 +34,7 @@ val snackList = listOf(
 fun SnackScreen(
     modifier: Modifier = Modifier
 ) {
+    val navController = localNavigationController.current
 
     AppScaffold(
         horizontalPadding = 0.dp,
@@ -50,7 +54,7 @@ fun SnackScreen(
             )
         }
     ) {
-        Column {
+        Column(modifier = modifier) {
             Text(
                 "Take your snack",
                 fontFamily = urbanist,
@@ -71,7 +75,9 @@ fun SnackScreen(
                     R.drawable.oreo_item,
                     R.drawable.unkonw_item
                 ),
-                onItemClick = {}
+                onItemClick = {
+                    navController.navigate(SnackDetailRoute(it))
+                }
 
             )
         }
