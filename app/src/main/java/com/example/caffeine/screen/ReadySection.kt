@@ -29,7 +29,7 @@ import com.example.caffeine.ui.theme.urbanist
 @Composable
 fun ReadySection(modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier.widthIn(max = 207.dp),
+        modifier = modifier.widthIn(max = 207.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
