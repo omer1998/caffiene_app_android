@@ -21,6 +21,7 @@ import kotlin.math.abs
 @Composable
 fun SnacksCardList(
     items: List<Int>,
+    onItemClick: (imageId: Int)-> Unit,
     modifier: Modifier = Modifier
 ) {
     val listState = rememberLazyListState()

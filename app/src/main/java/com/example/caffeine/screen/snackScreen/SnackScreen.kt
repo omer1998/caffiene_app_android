@@ -70,7 +70,9 @@ fun SnackScreen(
                     R.drawable.choclate_item,
                     R.drawable.oreo_item,
                     R.drawable.unkonw_item
-                )
+                ),
+                onItemClick = {}
+
             )
         }
 
