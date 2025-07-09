@@ -17,7 +17,7 @@ import com.example.caffeine.component.AppScaffold
 import com.example.caffeine.component.CircularButton
 import com.example.caffeine.navigation.SnackDetailRoute
 import com.example.caffeine.navigation.localNavigationController
-import com.example.caffeine.screen.SnackDetailScreen
+import com.example.caffeine.screen.snackDetail.SnackDetailScreen
 import com.example.caffeine.screen.snackScreen.component.SnacksCardList
 import com.example.caffeine.ui.theme.urbanist
 

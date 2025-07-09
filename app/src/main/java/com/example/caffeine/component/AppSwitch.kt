@@ -1,6 +1,7 @@
 package com.example.caffeine.component
 
 import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
@@ -44,16 +45,26 @@ fun AppSwitch(
     thumbSize: Dp = 40.dp,
     onColor: Color,
     offColor: Color,
-    thumb: @Composable () -> Unit = {}
+    thumb: (@Composable () -> Unit)? = null
 ) {
     val transition = updateTransition(targetState = checked, label = "SwitchTransition")
 
-    val switchColor = transition.animateColor(label = "TrackColor") {
+    val switchColor = transition.animateColor(
+        label = "TrackColor",
+        transitionSpec = {
+            TweenSpec(durationMillis = 300)
+        }
+    ) {
         if (it) onColor else offColor
     }
 
-    val thumbOffset = transition.animateDp(label = "ThumbOffset") { state ->
-        if (!state) width - thumbSize - 4.dp else 4.dp
+    val thumbOffset = transition.animateDp(
+        label = "ThumbOffset",
+        transitionSpec = {
+            TweenSpec(durationMillis = 300)
+        }
+    ) { state ->
+        if (!state) width - thumbSize - 1.5.dp else 1.5.dp
     }
 
     val interactionSource = remember { MutableInteractionSource() }
@@ -70,17 +81,26 @@ fun AppSwitch(
             ) { onCheckedChange(!checked) },
         contentAlignment = Alignment.CenterStart
     ) {
-        Box(
-            modifier
-                .size(thumbSize)
-                .offset(x = thumbOffset.value)
-                .clip(CircleShape)
-                .zIndex(3f)
-        ) {
-            Image(
-                contentDescription = null,
-                painter = painterResource(R.drawable.coffee_cup_component)
-            )
+        if (thumb == null) {
+            Box(
+                modifier
+                    .size(thumbSize)
+                    .offset(x = thumbOffset.value)
+                    .clip(CircleShape)
+                    .zIndex(3f)
+                    .padding(
+                        top = 1.1.dp,
+                        bottom = 1.1.dp,
+                        start = 1.1.dp
+                    )
+            ) {
+                Image(
+                    contentDescription = null,
+                    painter = painterResource(R.drawable.coffee_cup_component)
+                )
+            }
+        }else {
+            thumb()
         }
         Text(
             "ON",

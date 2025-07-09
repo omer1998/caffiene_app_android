@@ -1,4 +1,4 @@
-package com.example.caffeine.screen
+package com.example.caffeine.screen.snackDetail
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -93,7 +93,7 @@ fun SnackDetailScreen(
                 modifier = Modifier
                     .widthIn(max = 330.dp, min = 300.dp)
                     .padding(top = 24.dp),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Fit
             )
             Row(
                 modifier = Modifier.padding(top = 12.dp),

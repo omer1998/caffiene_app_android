@@ -8,9 +8,9 @@ enum class CupSize {
 
 fun CupSize.scale (): Float{
     return when (this){
-        CupSize.S -> 0.7f
+        CupSize.S -> 0.8f
         CupSize.M -> 1f
-        CupSize.L -> 1.3f
+        CupSize.L -> 1.2f
     }
 }
 

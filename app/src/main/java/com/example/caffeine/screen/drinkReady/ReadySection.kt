@@ -1,4 +1,4 @@
-package com.example.caffeine.screen.drinkReadyScreen
+package com.example.caffeine.screen.drinkReady
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.caffeine.R
+import com.example.caffeine.modifier.myShadow
 import com.example.caffeine.ui.theme.AppTheme
 import com.example.caffeine.ui.theme.urbanist
 
@@ -34,8 +35,15 @@ fun ReadySection(modifier: Modifier = Modifier) {
         Box(
             modifier = Modifier
                 .size(56.dp)
-                .clip(shape = CircleShape)
-                .background(AppTheme.color.caffeineRoast),
+                .background(AppTheme.color.caffeineRoast, shape = CircleShape)
+                .myShadow(
+                    color = AppTheme.color.caffeineRoast.copy(0.5f),
+                    offsetX = 0.dp,
+                    offsetY = 2.dp,
+                    blurRadius = 8.dp,
+                    shape = CircleShape
+                )
+            ,
             contentAlignment = Alignment.Center
         ) {
             Icon(

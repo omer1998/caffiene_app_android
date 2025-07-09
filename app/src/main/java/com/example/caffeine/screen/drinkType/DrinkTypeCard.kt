@@ -11,13 +11,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.caffeine.R
+import com.example.caffeine.ui.theme.urbanist
 
 @Composable
 fun DrinkTypeCard(
@@ -25,15 +25,21 @@ fun DrinkTypeCard(
 ) {
     Column(
         verticalArrangement = Arrangement.Bottom,
-        modifier = Modifier.width(250.dp).height(300.dp), horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier
+            .width(250.dp)
+            .height(300.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
             painter = painterResource(imageId),
             contentDescription = null,
-            modifier = Modifier.height((scale*250).dp)
+            modifier = Modifier.height((scale * 250).dp)
         )
         Text(
-            name, modifier = Modifier.padding(top = 16.dp)
+            name, modifier = Modifier.padding(top = 16.dp),
+            fontWeight = FontWeight(700),
+            fontSize = 32.sp,
+            fontFamily = urbanist
         )
     }
 }

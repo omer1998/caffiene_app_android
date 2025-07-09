@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.caffeine.modifier.myShadow
 import com.example.caffeine.screen.drinkDetail.CupSize
 import com.example.caffeine.ui.theme.AppTheme
 import com.example.caffeine.ui.theme.urbanist
@@ -77,20 +78,22 @@ fun CupSizeOption(
                         top = 8.dp,
                         bottom = 8.dp
                     )
+            val color = if (isSelected) AppTheme.color.caffeineRoast.copy(0.5f) else Color.Transparent
 
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = sidePadding
-                    .shadow(
-                        shadowRadius,                   
-                        shape = CircleShape,            
-                        ambientColor = Color(0x80B94B23)
-                    )                                   
                     .size(40.dp)
-                    .clip(CircleShape)
                     .background(
                         shape = CircleShape,
                         color = shapeColor
+                    )
+                    .myShadow(
+                        color = color,
+                        offsetX = 0.dp,
+                        offsetY = 2.dp,
+                        blurRadius = 8.dp,
+                        shape = CircleShape
                     )
                     .clickable(
                         interactionSource = interactionSource,

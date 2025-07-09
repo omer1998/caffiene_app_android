@@ -1,4 +1,4 @@
-package com.example.caffeine.screen.drinkReadyScreen
+package com.example.caffeine.screen.drinkReady
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.TweenSpec
@@ -50,18 +50,27 @@ import kotlinx.coroutines.launch
 fun DrinkReadyScreen(modifier: Modifier = Modifier) {
     val cupOffset = remember { Animatable(-200f) }
     val readySectionOffset = remember { Animatable(-200f) }
+    val primaryButtonOffset = remember { Animatable(200f) }
+
     var isTakeAway by remember { mutableStateOf(true) }
     val scope = rememberCoroutineScope()
     val navController = localNavigationController.current
     LaunchedEffect(Unit) {
-        scope.launch {
+        launch {
             cupOffset.animateTo(
-                -50f, animationSpec = TweenSpec(durationMillis = 3000)
+                -50f, animationSpec = TweenSpec(durationMillis = 2500)
             )
         }
-        readySectionOffset.animateTo(
-            0f, animationSpec = TweenSpec(durationMillis = 3000)
-        )
+        launch {
+            readySectionOffset.animateTo(
+                0f, animationSpec = TweenSpec(durationMillis = 2000)
+            )
+        }
+        launch {
+            primaryButtonOffset.animateTo(
+                0f, animationSpec = TweenSpec(durationMillis = 2000)
+            )
+        }
     }
     AppScaffold(
         appBar = {
@@ -140,7 +149,9 @@ fun DrinkReadyScreen(modifier: Modifier = Modifier) {
                 onClick = {
                     navController.navigate(SnacksScreenRoute)
                 },
-                modifier = Modifier.padding(top = 16.dp)
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .offset(y = primaryButtonOffset.value.dp)
             )
         }
     }

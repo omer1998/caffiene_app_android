@@ -1,21 +1,19 @@
 package com.example.caffeine.screen.drinkDetail
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.TweenSpec
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,12 +24,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -46,201 +41,145 @@ import com.example.caffeine.component.CircularButton
 import com.example.caffeine.navigation.DrinkReadyRoute
 import com.example.caffeine.navigation.localNavigationController
 import com.example.caffeine.screen.drinkDetail.component.AlmostDoneSection
-import com.example.caffeine.screen.drinkDetail.component.CoffeeAmountOption
-import com.example.caffeine.screen.drinkDetail.component.CupSizeOption
+import com.example.caffeine.screen.drinkDetail.component.HeaderImageSection
 import com.example.caffeine.screen.drinkDetail.component.LoadingIndicator
+import com.example.caffeine.screen.drinkDetail.component.SelectionOptions
 import com.example.caffeine.ui.theme.urbanist
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+
 @Composable
 fun DrinkDetailScreen(title: String, modifier: Modifier = Modifier) {
+    val navController = localNavigationController.current
     val screenHeight = LocalConfiguration.current.screenHeightDp.toFloat()
+
     var currentCupSize by remember { mutableStateOf(CupSize.M) }
     var currentCoffeeAmount by remember { mutableStateOf(CoffeeAmount.MEDIUM) }
-    val cupScale by remember { mutableStateOf(1f) }
-    var cupScaleAnimatable = remember { Animatable(cupScale) }
-    val offsetY = remember { Animatable(-300f) }
-    val alpha = remember { Animatable(1f) }
-    val appBarOffset = remember { Animatable(screenHeight) }
     var almostDoneVisible by remember { mutableStateOf(false) }
     var isShowTopBar by remember { mutableStateOf(true) }
 
-    val navController = localNavigationController.current
+    val cupScale = remember { Animatable(1f) }
+    val offsetY = remember { Animatable(-300f) }
+    val alpha = remember { Animatable(1f) }
+    val appBarOffset = remember { Animatable(screenHeight) }
 
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        scope.launch {
-            appBarOffset.animateTo(
-                targetValue = 0f,
-                animationSpec = TweenSpec(durationMillis = 1000)
-            )
+        launch {
+            appBarOffset.animateTo(0f, TweenSpec(durationMillis = 1000))
         }
-        scope.launch {
-            offsetY.animateTo(
-                targetValue = 30f,
-                animationSpec = TweenSpec(durationMillis = 2500)
-            )
+        launch {
+            offsetY.animateTo(30f, TweenSpec(durationMillis = 2500))
         }
-
-        alpha.animateTo(
-            targetValue = 0f,
-            animationSpec = TweenSpec(durationMillis = 2500)
-        )
-
+        alpha.animateTo(0f, TweenSpec(durationMillis = 2500))
     }
+
     AppScaffold(
         appBar = {
-            AnimatedVisibility(
-                isShowTopBar,
-                enter = slideInVertically(animationSpec = TweenSpec(durationMillis = 700)) { it ->
-                    -it * 2
-                },
-                exit = slideOutVertically(animationSpec = TweenSpec(durationMillis = 700)) { it ->
-                    -it * 2
-                }
-            )
-            {
-                AppBar(
-                    modifier = Modifier.offset(y = appBarOffset.value.dp),
-                    leading = {
+            Box(
+                modifier = Modifier
+                    .height(48.dp)
+                    .fillMaxWidth()
+            ) {
+                AnimatedVisibility(
+                    visible = isShowTopBar,
+                    enter = slideInVertically(animationSpec = tween(700)) { -it * 2 },
+                    exit = slideOutVertically(animationSpec = tween(700)) { -it * 2 }) {
+                    AppBar(modifier = Modifier.offset(y = appBarOffset.value.dp), leading = {
                         CircularButton(
-                            onClick = {}, icon = ImageVector.vectorResource(R.drawable.back_arrow)
+                            onClick = { /* handle back */ },
+                            icon = ImageVector.vectorResource(R.drawable.back_arrow)
                         )
-                    },
-                    title = {
+                    }, title = {
                         Text(
-                            title,
-                            fontWeight = FontWeight(700),
+                            text = title,
+                            fontWeight = FontWeight.Bold,
                             fontFamily = urbanist,
                             fontSize = 24.sp,
                             letterSpacing = 0.25.sp,
                             color = Color(0xDE1F1F1F),
                             textAlign = TextAlign.Start
                         )
-                    },
-                )
+                    })
+                }
             }
+
         }) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(350.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.coffee_beans),
-                    contentDescription = "Coffee Beans",
-                    modifier = modifier
-                        .offset(y = offsetY.value.dp)
-                        .alpha(alpha.value)
-                        .size(width = 100.dp, height = 150.dp)
-                )
-                Box(Modifier.fillMaxWidth()) {
-                    Image(
-                        painter = painterResource(R.drawable.cup_size),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(vertical = 50.dp)
-                            .scale(cupScaleAnimatable.value)
+            HeaderImageSection(
+                modifier,
+                cupScale = cupScale.value,
+                offsetY = offsetY.value,
+                alpha = alpha.value,
+                cupSizeLabel = currentCupSize.getSize().toString()
+            )
 
-                        // contentScale = ContentScale.Crop
-
-                    )
-
-                    Text(
-                        "${currentCupSize.getSize()} ML",
-                        fontWeight = FontWeight(500),
-                        fontFamily = urbanist,
-                        fontSize = 14.sp,
-                        letterSpacing = 0.25.sp,
-                        color = Color(0x99000000),
-                        modifier = Modifier
-                            .align(alignment = Alignment.TopStart)
-                            .offset(y = 50.dp)
-                    )
-
-                }
-
-                Image(
-                    modifier = Modifier
-                        .size(66.dp)
-                        .align(alignment = Alignment.Center),
-                    contentDescription = null,
-                    painter = painterResource(R.drawable.the_shance_coffee)
-                )
-            }
             AnimatedVisibility(!almostDoneVisible) {
-                Column {
-                    CupSizeOption(
-                        currentSize = currentCupSize, onClick = {
-                            currentCupSize = it
-                            scope.launch {
-                                cupScaleAnimatable.animateTo(targetValue = it.scale())
-
-                            }
-                        })
-                    CoffeeAmountOption(
-                        modifier = Modifier.padding(top = 16.dp), onClick = {
-                            scope.launch {
-
-                                alpha.snapTo(1f)
-                                offsetY.snapTo(-300f)
-                                offsetY.animateTo(
-                                    targetValue = 30f,
-                                    animationSpec = TweenSpec(durationMillis = 2500)
-                                )
-                                alpha.animateTo(
-                                    targetValue = 0f,
-                                    animationSpec = TweenSpec(durationMillis = 2500)
-                                )
-
-
-                            }
-                            currentCoffeeAmount = it
-
-                        }, currentCoffeeAmount = currentCoffeeAmount
-                    )
-                }
+                SelectionOptions(currentCupSize = currentCupSize, onCupSizeSelected = {
+                    currentCupSize = it
+                    scope.launch {
+                        cupScale.animateTo(
+                            it.scale(), animationSpec = TweenSpec(400)
+                        )
+                    }
+                }, currentCoffeeAmount = currentCoffeeAmount, onCoffeeAmountSelected = {
+                    currentCoffeeAmount = it
+                    scope.launch {
+                        alpha.snapTo(1f)
+                        offsetY.snapTo(-300f)
+                        offsetY.animateTo(30f, TweenSpec(2500))
+                        alpha.animateTo(0f, TweenSpec(2500))
+                    }
+                })
             }
-
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Crossfade(
-                targetState = almostDoneVisible,
-                label = "crossFade animation"
 
+
+            AnimatedVisibility(
+                visible = !almostDoneVisible, enter = fadeIn(
+                    animationSpec = TweenSpec(100)
+
+                ), exit = fadeOut(
+                    animationSpec = TweenSpec(100)
+
+                )
             ) {
-                if (it) {
-                    Column(modifier = Modifier.fillMaxWidth()) {
-                        LoadingIndicator()
-                        Spacer(modifier.height(37.dp))
-                        AlmostDoneSection()
-                    }
-
-
-                } else {
-                    AppPrimaryButton(
-                        title = "continue",
-                        icon = ImageVector.vectorResource(R.drawable.arrow_right),
-                        onClick = {
-                            isShowTopBar = !isShowTopBar
-                            almostDoneVisible = true
-                            scope.launch {
-                                delay(4000)
-                                navController.navigate(DrinkReadyRoute)
-                            }
-                        },
-                    )
-
+                AppPrimaryButton(
+                    modifier = Modifier.animateEnterExit(
+                        exit = fadeOut(
+                            animationSpec = TweenSpec(200)
+                        ), enter = fadeIn(
+                            animationSpec = TweenSpec(200)
+                        )
+                    ),
+                    title = "Continue",
+                    icon = ImageVector.vectorResource(R.drawable.arrow_right),
+                    onClick = {
+                        isShowTopBar = false
+                        almostDoneVisible = true
+                        scope.launch {
+                            delay(4000)
+                            navController.navigate(DrinkReadyRoute)
+                        }
+                    })
+            }
+            AnimatedVisibility(
+                visible = almostDoneVisible, enter = fadeIn(
+                    animationSpec = TweenSpec(400)
+                ), exit = fadeOut(
+                    animationSpec = TweenSpec(400)
+                )
+            ) {
+                Column(Modifier.fillMaxWidth()) {
+                    LoadingIndicator()
+                    Spacer(Modifier.height(37.dp))
+                    AlmostDoneSection()
                 }
             }
-
-
         }
     }
 }

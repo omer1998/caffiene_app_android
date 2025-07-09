@@ -1,5 +1,6 @@
 package com.example.caffeine.screen.drinkType
 
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.animateDpAsState
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
@@ -16,8 +18,8 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,6 +38,7 @@ import com.example.caffeine.navigation.DrinkDetailRoute
 import com.example.caffeine.navigation.localNavigationController
 import com.example.caffeine.screen.home.HomeAppBar
 import com.example.caffeine.ui.theme.urbanist
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -44,12 +47,20 @@ fun DrinkTypeScreen(modifier: Modifier = Modifier) {
         initialPage = 0,
         pageCount = { drinksList.size }
     )
+    val scope = rememberCoroutineScope()
+    val appBarOffset = remember { Animatable(0f) }
 
     val navController = localNavigationController.current
 
     AppScaffold(
         horizontalPadding = 0.dp,
-        appBar = { HomeAppBar(modifier = Modifier.padding(horizontal = 16.dp)) }) {
+        appBar = {
+            HomeAppBar(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .offset(x = appBarOffset.value.dp)
+            )
+        }) {
         Column(
             modifier = modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -139,7 +150,16 @@ fun DrinkTypeScreen(modifier: Modifier = Modifier) {
                 title = "continue",
                 icon = ImageVector.vectorResource(R.drawable.arrow_right),
                 onClick = {
-                    navController.navigate(DrinkDetailRoute(type = drinksList[pagerState.currentPage].name))
+                    scope.launch {
+                        appBarOffset.animateTo(
+                            -400f,
+                            animationSpec = TweenSpec(durationMillis = 400)
+                        )
+                        navController.navigate(
+                            DrinkDetailRoute(type = drinksList[pagerState.currentPage].name)
+                        )
+                    }
+
                 },
             )
 

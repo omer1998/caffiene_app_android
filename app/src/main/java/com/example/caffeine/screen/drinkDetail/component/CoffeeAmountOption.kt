@@ -26,8 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -36,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.caffeine.R
+import com.example.caffeine.modifier.myShadow
 import com.example.caffeine.screen.drinkDetail.CoffeeAmount
 import com.example.caffeine.screen.drinkDetail.CupSize
 import com.example.caffeine.ui.theme.AppTheme
@@ -50,11 +49,12 @@ fun CoffeeAmountOption(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-        .widthIn(
-            min = 152.dp,
-            max = 156.dp
-        )
-        .wrapContentWidth()) {
+            .widthIn(
+                min = 152.dp,
+                max = 156.dp
+            )
+            .wrapContentWidth()
+    ) {
         Row(
             modifier = modifier
                 .background(
@@ -96,19 +96,21 @@ fun CoffeeAmountOption(
                     bottom = 8.dp
                 )
 
+                val color = if (isSelected) AppTheme.color.caffeineRoast.copy(0.5f) else Color.Transparent
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = sidePadding
                         .size(40.dp)
-                        .shadow(
-                            shadowRadius,
-                            shape = CircleShape,
-                            ambientColor = Color(0x80B94B23)
-                        )
-                        .clip(CircleShape)
                         .background(
                             shape = CircleShape,
                             color = shapeColor
+                        )
+                        .myShadow(
+                            color = color ,
+                            offsetX = 0.dp,
+                            offsetY = 2.dp,
+                            blurRadius = 8.dp,
+                            shape = CircleShape
                         )
                         .clickable(
                             interactionSource = interactionSource,
@@ -123,7 +125,7 @@ fun CoffeeAmountOption(
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.coffee_bean),
                             contentDescription = null,
-                            tint = iconColor
+                            tint = iconColor,
                         )
                     }
                 }
